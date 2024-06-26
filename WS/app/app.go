@@ -55,6 +55,19 @@ func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 	w.Write(response)
 }
 
+func (a *App) healthCheck(w http.ResponseWriter, r *http.Request) {
+	respondWithJSON(w, http.StatusOK, map[string]string{"status": "OK"})
+}
+
+func (a *App) checkDBConnection(w http.ResponseWriter, r *http.Request) {
+	err := a.DB.Ping()
+	if err != nil {
+		respondWithError(w, http.StatusInternalServerError, "Database connection failed")
+		return
+	}
+	respondWithJSON(w, http.StatusOK, map[string]string{"status": "Database connection successful"})
+}
+
 func (a *App) getUsers(w http.ResponseWriter, r *http.Request) {
 	count, _ := strconv.Atoi(r.FormValue("count"))
 	start, _ := strconv.Atoi(r.FormValue("start"))
@@ -77,14 +90,12 @@ func (a *App) getUsers(w http.ResponseWriter, r *http.Request) {
 
 func authenticate(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// Obtém o token do cabeçalho Authorization
 		tokenHeader := r.Header.Get("Authorization")
 		if tokenHeader == "" {
 			respondWithError(w, http.StatusUnauthorized, "Unauthorized")
 			return
 		}
 
-		// O token está no formato "Bearer {token}", então o dividimos
 		tokenParts := strings.Split(tokenHeader, " ")
 		if len(tokenParts) != 2 || tokenParts[0] != "Bearer" {
 			respondWithError(w, http.StatusUnauthorized, "Invalid Token")
@@ -92,9 +103,7 @@ func authenticate(next http.HandlerFunc) http.HandlerFunc {
 		}
 
 		tokenStr := tokenParts[1]
-
 		claims := &Claims{}
-
 		jwtKey := os.Getenv("JWT_KEY")
 
 		token, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
@@ -115,13 +124,11 @@ func authenticate(next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 
-		// Se o token for válido, chama o próximo manipulador
 		next.ServeHTTP(w, r)
 	}
 }
 
 func (a *App) getUser(w http.ResponseWriter, r *http.Request) {
-
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
@@ -249,7 +256,6 @@ func (a *App) login(w http.ResponseWriter, r *http.Request) {
 		}
 
 		token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-
 		jwtKey := os.Getenv("JWT_KEY")
 		tokenString, err := token.SignedString([]byte(jwtKey))
 		if err != nil {
@@ -261,16 +267,17 @@ func (a *App) login(w http.ResponseWriter, r *http.Request) {
 	} else {
 		respondWithError(w, http.StatusUnauthorized, "Falha no login")
 	}
-
 }
 
 func (a *App) initializeRoutes() {
+	a.Router.HandleFunc("/health", a.healthCheck).Methods("GET")
+	a.Router.HandleFunc("/checkdb", a.checkDBConnection).Methods("GET")
+	
 	a.Router.HandleFunc("/users", authenticate(a.getUsers)).Methods("GET")
 	a.Router.HandleFunc("/user/{id:[0-9]+}", a.getUser).Methods("GET")
 	a.Router.HandleFunc("/user", a.createUser).Methods("POST")
 	a.Router.HandleFunc("/user/{id:[0-9]+}", a.updateUser).Methods("PUT")
 	a.Router.HandleFunc("/user/{id:[0-9]+}", a.deleteUser).Methods("DELETE")
-
 	a.Router.HandleFunc("/login", a.login).Methods("POST")
 }
 
