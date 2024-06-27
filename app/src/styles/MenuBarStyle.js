@@ -1,13 +1,15 @@
 import { useTheme } from '@mui/material/styles';
 
-const MenuBarStyles = () => {
+const Styles = () => {
   const theme = useTheme();
-    console.log(theme)
   return {
     container: {
      background: theme.palette.colors.onPrimary,
+    },
+    colorButton: {
+      color: "white",
     }
   };
 };
 
-export default MenuBarStyles;
+export default Styles;

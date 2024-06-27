@@ -35,10 +35,11 @@ const MenuBar = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
+            Agenda Astrológica
           </Typography>
-          <Button onClick={onToggleTheme}> theme </Button>
-          <Link to="/login">Login</Link>
+          <Button onClick={onToggleTheme} sx={classes.colorButton}> Tema </Button>
+          <Link to="/login"><Button sx={classes.colorButton}>Entrar</Button></Link>
+          <Link to="/register"><Button sx={classes.colorButton}>Cadastrar</Button></Link>
         </Toolbar>
       </AppBar>
       

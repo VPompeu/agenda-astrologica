@@ -8,6 +8,8 @@ import sessionStore from './stores/SessionStore';
 import Login from './components/login/Login';
 import Home from './components/home/Home';
 import Page from "./components/Page";
+import Register from './components/login/Register';
+
 const App = () => {
 
   const [theme, setTheme] = useState(lightTheme);
@@ -38,6 +40,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Page />}>
             <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
             <Route path="home" element={<Home />}/>
             <Route path="license" element={<Home />}/>
           </Route>
