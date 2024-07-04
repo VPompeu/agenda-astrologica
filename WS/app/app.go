@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/VPompeu/agenda-astrologica/models"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
@@ -29,12 +30,12 @@ type Claims struct {
 	jwt.RegisteredClaims
 }
 
-func (a *App) Initialize(user, password, dbname string) {
+func (a *App) Initialize(user, password, host, port, dbname string) {
 	connectionString :=
-		fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", user, password, dbname)
+		fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", user, password, host, port, dbname)
 
 	var err error
-	a.DB, err = sql.Open("postgres", connectionString)
+	a.DB, err = sql.Open("mysql", connectionString)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -272,7 +273,7 @@ func (a *App) login(w http.ResponseWriter, r *http.Request) {
 func (a *App) initializeRoutes() {
 	a.Router.HandleFunc("/health", a.healthCheck).Methods("GET")
 	a.Router.HandleFunc("/checkdb", a.checkDBConnection).Methods("GET")
-	
+
 	a.Router.HandleFunc("/users", authenticate(a.getUsers)).Methods("GET")
 	a.Router.HandleFunc("/user/{id:[0-9]+}", a.getUser).Methods("GET")
 	a.Router.HandleFunc("/user", a.createUser).Methods("POST")
