@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { lightTheme, darkTheme } from './styles/Theme';
-
-import sessionStore from './stores/SessionStore';
-
+import { Navigate } from "react-router-dom";
+import SessionStore from './stores/SessionStore';
 import Login from './components/login/Login';
 import Home from './components/home/Home';
 import Page from "./components/Page";
@@ -13,6 +12,7 @@ import Register from './components/login/Register';
 const App = () => {
 
   const [theme, setTheme] = useState(lightTheme);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
 
   useEffect(() => {
@@ -21,12 +21,23 @@ const App = () => {
     return clear;
   });
 
+  const handleLogin = () => {
+    const token = SessionStore.getToken();
+    if(token) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+    }
+  }
+
   const bind = () => {
-    sessionStore.addListener("theme_change", toggleTheme);
+    SessionStore.addListener("theme_change", toggleTheme);
+    SessionStore.addListener("login", handleLogin);
   }
 
   const clear = () => {
-    sessionStore.removeListener("theme_change", toggleTheme);
+    SessionStore.removeListener("theme_change", toggleTheme);
+    SessionStore.removeListener("login", handleLogin);
   }
 
   const toggleTheme = () => {
@@ -39,11 +50,11 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/" element={<Page />}>
-            <Route path="login" element={<Login />} />
-            <Route path="register" element={<Register />} />
-            <Route path="home" element={<Home />}/>
+            <Route path="home" element={<Home />} />
             <Route path="license" element={<Home />}/>
           </Route>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </Router>
     </ThemeProvider>

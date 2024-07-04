@@ -5,7 +5,7 @@ const LoginStyles = () => {
 
   return {
     container: {
-        marginTop: "calc(50vh - 180px)",
+      marginTop: "10vh",
     }
   };
 };

@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MainButton from "../common/MainButton";
 import TextField from '@mui/material/TextField';
 import Styles from "../../styles/RegisterStyle";
+import Logo from '../../assets/logoSemFundo.png';
 
 import { Grid } from '@mui/material';
+import MenuBar from '../MenuBar';
 
 const Register = () => {
     const [name, setName] = useState("");
@@ -18,6 +20,10 @@ const Register = () => {
     const classes = Styles();
 
     const register = () => {
+        
+    }
+
+    useEffect(() => {
         console.log(name);
         console.log(email);
         console.log(password);
@@ -26,7 +32,7 @@ const Register = () => {
         console.log(city);
         console.log(state);
         console.log(country);
-    }
+      },[name, email, password, phone, birthday, city, state, country]);
 
     const onChangeInput = (event) => {
         console.log(event);
@@ -57,35 +63,41 @@ const Register = () => {
     }
 
     return(
-        <Grid container sx={classes.container} spacing={2} direction="column" justifyContent="center" alignItems="center">
-            <Grid item xs>
-                <TextField id="standard-basic" label="Nome" name="name" variant="standard" onChange={onChangeInput} />
+        <div>
+            <MenuBar />
+            <Grid container sx={classes.container} spacing={2} direction="column" justifyContent="center" alignItems="center">
+                <Grid item xs>
+                    <img src={Logo} alt="Logo" style={{ width: '300px', height: 'auto' }} />
+                </Grid>
+                <Grid item xs>
+                    <TextField id="standard-basic" label="Nome" name="name" variant="standard" onChange={onChangeInput} />
+                </Grid>
+                <Grid item xs>
+                    <TextField id="standard-basic" label="Email" name="email" variant="standard" onChange={onChangeInput} />
+                </Grid>
+                <Grid item xs>
+                    <TextField id="standard-basic" label="Senha" name="password" variant="standard" type="password" onChange={onChangeInput} />
+                </Grid>
+                <Grid item xs>
+                    <TextField id="standard-basic" label="Telefone" name="phone" variant="standard" onChange={onChangeInput} />
+                </Grid>
+                <Grid item xs>
+                    <TextField id="standard-basic" label="Data de Nascimento" name="birthday" placeholder="modelo: 00/00/0000" variant="standard" onChange={onChangeInput} />
+                </Grid>
+                <Grid item xs>
+                    <TextField id="standard-basic" label="Cidade" name="city" variant="standard" onChange={onChangeInput} />
+                </Grid>
+                <Grid item xs>
+                    <TextField id="standard-basic" label="Sigla do Estado" name="state" variant="standard" onChange={onChangeInput} />
+                </Grid>
+                <Grid item xs>
+                    <TextField id="standard-basic" label="País" name="country" variant="standard" onChange={onChangeInput} />
+                </Grid>
+                <Grid item xs={12}>
+                    <MainButton  onClick={register} text={"Register"} />
+                </Grid>
             </Grid>
-            <Grid item xs>
-                <TextField id="standard-basic" label="Email" name="email" variant="standard" onChange={onChangeInput} />
-            </Grid>
-            <Grid item xs>
-                <TextField id="standard-basic" label="Senha" name="password" variant="standard" type="password" onChange={onChangeInput} />
-            </Grid>
-            <Grid item xs>
-                <TextField id="standard-basic" label="Telefone" name="phone" variant="standard" onChange={onChangeInput} />
-            </Grid>
-            <Grid item xs>
-                <TextField id="standard-basic" label="Data de Nascimento" name="birthday" placeholder="utilize o modelo 00/00/0000" variant="standard" onChange={onChangeInput} />
-            </Grid>
-            <Grid item xs>
-                <TextField id="standard-basic" label="Cidade" name="city" variant="standard" onChange={onChangeInput} />
-            </Grid>
-            <Grid item xs>
-                <TextField id="standard-basic" label="Sigla do Estado" name="state" variant="standard" onChange={onChangeInput} />
-            </Grid>
-            <Grid item xs>
-                <TextField id="standard-basic" label="País" name="country" variant="standard" onChange={onChangeInput} />
-            </Grid>
-            <Grid item xs={12}>
-                <MainButton  onClick={register} text={"Register"} />
-            </Grid>
-        </Grid>
+        </div>
     );
 }
 

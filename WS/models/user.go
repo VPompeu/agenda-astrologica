@@ -17,17 +17,18 @@ type User struct {
 	City     string `json:"city"`
 	State    string `json:"state"`
 	Country  string `json:"country"`
+	License	 string `json:"license"`
 }
 
 func (u *User) GetUser(db *sql.DB) error {
-	return db.QueryRow("SELECT name, email, password, phone, birthday, city, state, country FROM users WHERE id=$1",
-		u.ID).Scan(&u.Name, &u.Email, &u.Password, &u.Phone, &u.Birthday, &u.City, &u.State, &u.Country)
+	return db.QueryRow("SELECT name, email, password, phone, birthday, city, state, country, license FROM users WHERE id=$1",
+		u.ID).Scan(&u.Name, &u.Email, &u.Password, &u.Phone, &u.Birthday, &u.City, &u.State, &u.Country, &u.License)
 }
 
 func (u *User) UpdateUser(db *sql.DB) error {
 	_, err :=
-		db.Exec("UPDATE users SET name=$1, email=$2, phone=$3, birthday=$4, city=$5, state=$6, country=$7 WHERE id=$9",
-			&u.Name, &u.Email, &u.Phone, &u.Birthday, &u.City, &u.State, &u.Country, u.ID)
+		db.Exec("UPDATE users SET name=$1, email=$2, phone=$3, birthday=$4, city=$5, state=$6, country=$7, license=$8 WHERE id=$9",
+			&u.Name, &u.Email, &u.Phone, &u.Birthday, &u.City, &u.State, &u.Country, &u.License, &u.ID)
 
 	return err
 }
@@ -40,8 +41,8 @@ func (u *User) DeleteUser(db *sql.DB) error {
 
 func (u *User) CreateUser(db *sql.DB) error {
 	err := db.QueryRow(
-		"INSERT INTO users(name, email, password, phone, birthday, city, state, country) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id",
-		u.Name, u.Email, u.Password, u.Phone, u.Birthday, u.City, u.State, u.Country).Scan(&u.ID)
+		"INSERT INTO users(name, email, password, phone, birthday, city, state, country, license) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id",
+		u.Name, u.Email, u.Password, u.Phone, u.Birthday, u.City, u.State, u.Country, u.License).Scan(&u.ID)
 
 	if err != nil {
 		return err
@@ -71,7 +72,7 @@ func (u *User) Login(db *sql.DB) (bool, error) {
 
 func GetUsers(db *sql.DB, start, count int) ([]User, error) {
 	rows, err := db.Query(
-		"SELECT id, name, email, phone, birthday, city, state, country FROM users LIMIT $1 OFFSET $2",
+		"SELECT id, name, email, phone, birthday, city, state, country, license FROM users LIMIT $1 OFFSET $2",
 		count, start)
 
 	if err != nil {
@@ -84,7 +85,7 @@ func GetUsers(db *sql.DB, start, count int) ([]User, error) {
 
 	for rows.Next() {
 		var u User
-		if err := rows.Scan(&u.ID, &u.Name, &u.Email, &u.Phone, &u.Birthday, &u.City, &u.State, &u.Country); err != nil {
+		if err := rows.Scan(&u.ID, &u.Name, &u.Email, &u.Phone, &u.Birthday, &u.City, &u.State, &u.Country, &u.License); err != nil {
 			return nil, err
 		}
 		users = append(users, u)

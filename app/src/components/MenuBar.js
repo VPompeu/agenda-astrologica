@@ -1,6 +1,4 @@
-import React from 'react';
-
-import { Link } from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -8,6 +6,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Grid } from '@mui/material';
+import { useNavigate, useLocation } from "react-router-dom";
 
 import Styles from "../styles/MenuBarStyle";
 
@@ -16,9 +15,33 @@ import sessionStore from '../stores/SessionStore';
 const MenuBar = () => {
 
   const classes = Styles();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [buttonText, setButtonText] = useState("");
+
+  useEffect(() => {
+    if(location.pathname === "/login") {
+      setButtonText("Registrar");
+    } else{
+      setButtonText("Login");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
 
   const onToggleTheme = () => {
     sessionStore.emit("theme_change")
+  }
+
+  const buttonLogin = () => {
+    console.log(location.pathname);
+    if(location.pathname === "/login") {
+      setButtonText("Entrar");
+      navigate("/register");
+    } else{
+      setButtonText("Registrar");
+      navigate("/login");
+    }
+    
   }
 
   return (
@@ -38,8 +61,7 @@ const MenuBar = () => {
             Agenda Astrológica
           </Typography>
           <Button onClick={onToggleTheme} sx={classes.colorButton}> Tema </Button>
-          <Link to="/login"><Button sx={classes.colorButton}>Entrar</Button></Link>
-          <Link to="/register"><Button sx={classes.colorButton}>Cadastrar</Button></Link>
+          <Button sx={classes.colorButton} onClick={buttonLogin}>{buttonText}</Button>
         </Toolbar>
       </AppBar>
       
