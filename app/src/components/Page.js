@@ -11,7 +11,9 @@ const Page = () => {
   const auth = SessionStore.getToken();
 
   useEffect(() => {
-    navigate("/login");
+    if(!auth) {
+      navigate("/login");
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
 

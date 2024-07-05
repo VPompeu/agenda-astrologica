@@ -10,7 +10,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 import Styles from "../styles/MenuBarStyle";
 
-import sessionStore from '../stores/SessionStore';
+import SessionStore from '../stores/SessionStore';
 
 const MenuBar = () => {
 
@@ -22,14 +22,16 @@ const MenuBar = () => {
   useEffect(() => {
     if(location.pathname === "/login") {
       setButtonText("Registrar");
-    } else{
-      setButtonText("Login");
-    }
+    } else if(SessionStore.getToken()) {
+      setButtonText("Sair")
+    } else {
+      setButtonText("Entrar");
+    } 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
 
   const onToggleTheme = () => {
-    sessionStore.emit("theme_change")
+    SessionStore.emit("theme_change")
   }
 
   const buttonLogin = () => {
@@ -37,6 +39,9 @@ const MenuBar = () => {
     if(location.pathname === "/login") {
       setButtonText("Entrar");
       navigate("/register");
+    } else if(buttonText === "Sair") {
+      SessionStore.removeToken();
+      navigate("/login");
     } else{
       setButtonText("Registrar");
       navigate("/login");

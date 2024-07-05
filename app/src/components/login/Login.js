@@ -31,6 +31,7 @@ const Login = () => {
   }
 
   const responseLogin = (response) => {
+    console.log(response);
     if(response) {
       SessionStore.emit("login");
       navigate("/home");

@@ -4,11 +4,7 @@ import axios from "axios";
 import LocalConfig from './LocalConfig';
 import errorHandler from './ErrorHandler';
 
-class SessionStore extends EventEmitter {
-    constructor() {
-        super();
-    }
-
+class SStore extends EventEmitter {
     getToken() {
         let token = localStorage.getItem('token');
         if (!token) {
@@ -17,7 +13,6 @@ class SessionStore extends EventEmitter {
         try {
             // Decodifica o token
             const decodedToken = jwtDecode(token);
-
             // Verifica se o token ainda é válido
             const currentTime = Date.now() / 1000; // Tempo atual em segundos
             if (decodedToken.exp > currentTime) {
@@ -50,8 +45,51 @@ class SessionStore extends EventEmitter {
                 callback(false);
             });
     }
+
+    removeToken() {
+        localStorage.removeItem('token');
+    }
+
+    getUserID(){
+        let token = localStorage.getItem('token');
+        if (!token) {
+            return null
+        }
+        try {
+            // Decodifica o token
+            const decodedToken = jwtDecode(token);
+            if(decodedToken.id) {
+                return decodedToken.id;
+            } else {
+                return null;
+            }
+        } catch (err) {
+            console.error('Erro ao decodificar o token:', err.message);
+        }
+    }
+
+    verifyUserLicense(callback){
+        const token = this.getToken();
+        if(!token) {
+            callback("Unauthorized");
+            return;
+        }
+        const id = this.getUserID();
+        if(id) {
+            axios.get(LocalConfig.baseURL + '/user/' + id)
+                .then(function (response) {
+                    if (response?.data) {
+                        callback(response.data);
+                    }
+                })
+                .catch(function (error) {
+                    errorHandler(error);
+                    callback(null);
+                });
+        }
+    }
 }
 
 // Exemplo de uso da classe Store
-const sessionStore = new SessionStore();
-export default sessionStore;
+const SessionStore = new SStore();
+export default SessionStore;
