@@ -9,4 +9,4 @@ const Payment = () => {
   );
 }
 
-export default Home;
+export default Payment;

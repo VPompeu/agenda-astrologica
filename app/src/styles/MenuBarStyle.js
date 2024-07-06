@@ -8,6 +8,9 @@ const Styles = () => {
     },
     colorButton: {
       color: "white",
+    },
+    colorIcon: {
+      color: "white",
     }
   };
 };

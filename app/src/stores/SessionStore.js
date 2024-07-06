@@ -43,14 +43,14 @@ class SStore extends EventEmitter {
             .catch(function (error) {
                 errorHandler(error);
                 callback(false);
-            });
-    }
+            });
+    }
 
     removeToken() {
         localStorage.removeItem('token');
     }
 
-    getUserID(){
+    getUserID() {
         let token = localStorage.getItem('token');
         if (!token) {
             return null
@@ -58,7 +58,7 @@ class SStore extends EventEmitter {
         try {
             // Decodifica o token
             const decodedToken = jwtDecode(token);
-            if(decodedToken.id) {
+            if (decodedToken.id) {
                 return decodedToken.id;
             } else {
                 return null;
@@ -68,24 +68,29 @@ class SStore extends EventEmitter {
         }
     }
 
-    verifyUserLicense(callback){
+    verifyUserLicense(callback) {
         const token = this.getToken();
-        if(!token) {
+        if (!token) {
             callback("Unauthorized");
             return;
         }
         const id = this.getUserID();
-        if(id) {
-            axios.get(LocalConfig.baseURL + '/user/' + id)
+        if (id) {
+            axios.get(LocalConfig.baseURL + '/user/' + id, {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            })
                 .then(function (response) {
                     if (response?.data) {
-                        callback(response.data);
+                        callback(response.data.license)
                     }
                 })
                 .catch(function (error) {
                     errorHandler(error);
                     callback(null);
-                });
+                });
         }
     }
 }

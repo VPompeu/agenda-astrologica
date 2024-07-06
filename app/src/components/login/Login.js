@@ -16,12 +16,10 @@ const Login = () => {
   const classes = Styles();
 
   useEffect(() => {
-    console.log(email);
-    console.log(password);
-  },[email, password]);
+
+  });
 
   const onChangeInput = (event) => {
-    console.log(event)
     if (event.target.name === 'email') {
       setEmail(event.target.value)
     }

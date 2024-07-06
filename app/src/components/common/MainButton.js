@@ -3,15 +3,11 @@ import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 
 const MyButton = styled(Button)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.main,
-  color: "black",
-  '&:hover': {
-    backgroundColor: theme.palette.primary.dark,
-  },
+  
 }));
 
 const StyledButton = (props) => {
-  return <MyButton size='sm' onClick={props.onClick}>{props.text}</MyButton>;
+  return <MyButton size='sm' variant='outlined' onClick={props.onClick}>{props.text}</MyButton>;
 }
 
 export default StyledButton;

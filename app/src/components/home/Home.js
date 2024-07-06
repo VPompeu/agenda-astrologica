@@ -1,16 +1,28 @@
 import { Grid } from '@mui/material';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import SessionStore from '../../stores/SessionStore';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
 
-  //chamar SessionStore
-
+  const navigate = useNavigate();
   //const classes = Styles();
 
   useEffect(() => {
+    SessionStore.verifyUserLicense(responseUserLicense);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
+
+  const responseUserLicense = (response) => {
+    console.log(response);
+    if(response === "Unauthorized") {
+      navigate("/login");
+      return;
+    }
+    if(!response){
+      navigate("/payment");
+    }
+  }
 
   return (
     <div>
