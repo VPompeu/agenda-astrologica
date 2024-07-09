@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import MainButton from "../common/MainButton";
 import TextField from '@mui/material/TextField';
 import Styles from "../../styles/RegisterStyle";
@@ -6,64 +6,49 @@ import Logo from '../../assets/logoSemFundo.png';
 
 import { Grid } from '@mui/material';
 import MenuBar from '../MenuBar';
+import SessionStore from '../../stores/SessionStore';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [phone, setPhone] = useState("");
-    const [birthday, setBirthday] = useState("");
-    const [city, setCity] = useState("");
-    const [state, setState] = useState("");
-    const [country, setCountry] = useState("");
+
+    const navigate = useNavigate();
 
     const classes = Styles();
 
     const register = () => {
-        
+        SessionStore.signin({name, email, password, phone}, responseRegisterUser);
     }
 
-    useEffect(() => {
-        console.log(name);
-        console.log(email);
-        console.log(password);
-        console.log(phone);
-        console.log(birthday);
-        console.log(city);
-        console.log(state);
-        console.log(country);
-      },[name, email, password, phone, birthday, city, state, country]);
-
+    const responseRegisterUser = (response) => {
+        if(response){
+            console.log(response)
+            SessionStore.setEmail(response.email);
+            navigate("/login");
+        }
+    }
     const onChangeInput = (event) => {
-        console.log(event);
-        if(event.target.name === 'name'){
+
+        if (event.target.name === 'name') {
             setName(event.target.value);
         }
-        if(event.target.name === 'email'){
+        if (event.target.name === 'email') {
             setEmail(event.target.value);
         }
-        if(event.target.name === 'password'){
+        if (event.target.name === 'password') {
             setPassword(event.target.value);
         }
-        if(event.target.name === 'phone'){
+        if (event.target.name === 'phone') {
             setPhone(event.target.value);
         }
-        if(event.target.name === 'birthday'){
-            setBirthday(event.target.value);
-        }
-        if(event.target.name === 'city'){
-            setCity(event.target.value);
-        }
-        if(event.target.name === 'state'){
-            setState(event.target.value);
-        }
-        if(event.target.name === 'country'){
-            setCountry(event.target.value);
-        }
+      
     }
 
-    return(
-        <div>
+    return (
+        <Grid>
             <MenuBar />
             <Grid container sx={classes.container} spacing={2} direction="column" justifyContent="center" alignItems="center">
                 <Grid item xs>
@@ -81,23 +66,11 @@ const Register = () => {
                 <Grid item xs>
                     <TextField id="standard-basic" label="Telefone" name="phone" variant="standard" onChange={onChangeInput} />
                 </Grid>
-                <Grid item xs>
-                    <TextField id="standard-basic" label="Data de Nascimento" name="birthday" placeholder="modelo: 00/00/0000" variant="standard" onChange={onChangeInput} />
-                </Grid>
-                <Grid item xs>
-                    <TextField id="standard-basic" label="Cidade" name="city" variant="standard" onChange={onChangeInput} />
-                </Grid>
-                <Grid item xs>
-                    <TextField id="standard-basic" label="Sigla do Estado" name="state" variant="standard" onChange={onChangeInput} />
-                </Grid>
-                <Grid item xs>
-                    <TextField id="standard-basic" label="País" name="country" variant="standard" onChange={onChangeInput} />
-                </Grid>
                 <Grid item xs={12}>
-                    <MainButton  onClick={register} text={"Register"} />
+                    <MainButton onClick={register} text={"Register"} />
                 </Grid>
             </Grid>
-        </div>
+        </Grid>
     );
 }
 

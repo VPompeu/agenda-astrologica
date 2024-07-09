@@ -5,6 +5,18 @@ import LocalConfig from './LocalConfig';
 import errorHandler from './ErrorHandler';
 
 class SStore extends EventEmitter {
+
+    constructor() {
+        super();
+        this.email = "";
+    }
+    setEmail(email) {
+        this.email = email;
+        return;
+    }
+    getEmail() {
+        return this.email;
+    }
     getToken() {
         let token = localStorage.getItem('token');
         if (!token) {
@@ -45,9 +57,23 @@ class SStore extends EventEmitter {
                 callback(false);
             });
     }
+    signin(user, callback) {
+
+        axios.post(LocalConfig.baseURL + '/signin', user)
+            .then(function (response) {
+                if (response?.data) {
+                    callback(response.data)
+                }
+            })
+            .catch(function (error) {
+                errorHandler(error);
+                callback(null);
+            });
+    }
 
     removeToken() {
         localStorage.removeItem('token');
+        localStorage.removeItem('user');
     }
 
     getUserID() {
@@ -67,6 +93,13 @@ class SStore extends EventEmitter {
             console.error('Erro ao decodificar o token:', err.message);
         }
     }
+    getUser() {
+       let user = localStorage.getItem("user");
+       if(user){
+        return JSON.parse(user);
+       }
+       
+    }
 
     verifyUserLicense(callback) {
         const token = this.getToken();
@@ -84,6 +117,7 @@ class SStore extends EventEmitter {
             })
                 .then(function (response) {
                     if (response?.data) {
+                        localStorage.setItem('user', JSON.stringify(response.data));
                         callback(response.data.license)
                     }
                 })

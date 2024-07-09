@@ -2,6 +2,7 @@ import { Grid } from '@mui/material';
 import React, { useEffect } from 'react';
 import SessionStore from '../../stores/SessionStore';
 import { useNavigate } from 'react-router-dom';
+import Calendar from '../calendar/Calendar';
 
 const Home = () => {
 
@@ -26,8 +27,8 @@ const Home = () => {
 
   return (
     <div>
-      <Grid container spacing={2} direction="column" justifyContent="center" alignItems="center">
-        <p>Deu certo!</p>
+      <Grid container direction="column" justifyContent="center" alignItems="center">
+        <Calendar />
       </Grid>
     </div>
   );

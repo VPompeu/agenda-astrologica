@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider, CssBaseline } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import { lightTheme, darkTheme } from './styles/Theme';
 import SessionStore from './stores/SessionStore';
 import Login from './components/login/Login';
@@ -8,7 +10,7 @@ import Home from './components/home/Home';
 import Page from "./components/Page";
 import Register from './components/login/Register';
 import Payment from './components/home/Payment';
-
+import 'moment/locale/pt-br';
 const App = () => {
 
   const [theme, setTheme] = useState(lightTheme);
@@ -33,19 +35,21 @@ const App = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Router>
-        <Routes>
-          <Route path="/" element={<Page />}>
-            <Route path="home" element={<Home />} />
-            <Route path="payment" element={<Payment />}/>
-          </Route>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Routes>
-      </Router>
-    </ThemeProvider>
+    <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale='pt-BR'>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Router>
+          <Routes>
+            <Route path="/" element={<Page />}>
+              <Route path="home" element={<Home />} />
+              <Route path="payment" element={<Payment />} />
+            </Route>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        </Router>
+      </ThemeProvider>
+    </LocalizationProvider>
   );
 }
 

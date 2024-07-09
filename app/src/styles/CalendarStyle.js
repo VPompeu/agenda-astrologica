@@ -1,15 +1,17 @@
 //import { useTheme } from '@mui/material/styles';
 
-const RegisterStyles = () => {
+const PaymentStyle = () => {
     //const theme = useTheme();
   
     return {
       container: {
-          marginTop: "10vh",
-          padding: "10px"
+        marginTop: "10px"
+      },
+      textAlign: {
+        textAlign: "center"
       }
     };
   };
   
-  export default RegisterStyles;
+  export default PaymentStyle;
   

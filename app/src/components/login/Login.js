@@ -16,8 +16,9 @@ const Login = () => {
   const classes = Styles();
 
   useEffect(() => {
-
-  });
+    setEmail(SessionStore.getEmail());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
 
   const onChangeInput = (event) => {
     if (event.target.name === 'email') {
@@ -30,7 +31,7 @@ const Login = () => {
 
   const responseLogin = (response) => {
     console.log(response);
-    if(response) {
+    if (response) {
       SessionStore.emit("login");
       navigate("/home");
     }
@@ -48,7 +49,7 @@ const Login = () => {
           <img src={Logo} alt="Logo" style={{ width: '300px', height: 'auto' }} />
         </Grid>
         <Grid item xs>
-          <TextField id="standard-basic" label="Email" name='email' variant="standard" onChange={onChangeInput} />
+          <TextField value={email} id="standard-basic" label="Email" name='email' variant="standard" onChange={onChangeInput} />
         </Grid>
         <Grid item xs>
           <TextField id="standard-basic" label="Senha" name='password' variant="standard" type="password" onChange={onChangeInput} />
