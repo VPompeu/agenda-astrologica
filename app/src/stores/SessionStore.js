@@ -9,6 +9,14 @@ class SStore extends EventEmitter {
     constructor() {
         super();
         this.email = "";
+        this.theme = 'light';
+    }
+    setTheme() {
+        this.theme = this.theme === 'light' ? 'dark' : 'light';
+        return;
+    }
+    getTheme() {
+        return this.theme;
     }
     setEmail(email) {
         this.email = email;

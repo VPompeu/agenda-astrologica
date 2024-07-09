@@ -9,6 +9,9 @@ const PaymentStyle = () => {
       },
       textAlign: {
         textAlign: "center"
+      },
+      textEditor: {
+        minHeight: "300px"
       }
     };
   };
