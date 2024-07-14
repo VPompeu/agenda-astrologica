@@ -11,8 +11,6 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 
-import { ReactComponent as SunIcon } from "../../assets/sunIcon.svg";
-import { ReactComponent as MoonIcon } from "../../assets/moonIcon.svg";
 import CalendarStore from '../../stores/CalendarStore';
 import TextEditor from './TextEditor';
 import MainButton from "../common/MainButton";
@@ -49,7 +47,9 @@ function a11yProps(index) {
 const Calendar = () => {
 
   const [value, setValue] = useState(0);
+  const [id, setId] = useState(null);
   const [note, setNote] = useState({});
+  const [save, setSave] = useState(true);
   const [userNote, setUserNote] = useState("");
   const [calendarShow, setCalendarShow] = useState(false);
   const [date, setDate] = useState(null);
@@ -88,10 +88,12 @@ const Calendar = () => {
   }
 
   const responseGetUserNote = (response) => {
-    if(response){
+    if (response) {
       setUserNote(response.note);
-    }else{
+      setId(response.id);
+    } else {
       setUserNote("");
+      setId(null);
     }
   }
   const toggleCalendar = () => {
@@ -186,26 +188,6 @@ const Calendar = () => {
     return (
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Grid container spacing={2} >
-            <Grid item>
-              <SunIcon style={{ width: "20px", height: "20px" }} />
-            </Grid>
-            <Grid item>
-              <Typography> {note?.sun || " - "} </Typography>
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid item xs={12}>
-          <Grid container spacing={2}>
-            <Grid item>
-              <MoonIcon style={{ width: "20px", height: "20px" }} />
-            </Grid>
-            <Grid item>
-              <Typography> {note?.moon || " - "} </Typography>
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid item xs={12}>
           <Typography>
             {note?.note || "Sem notas para esse dia"}
           </Typography>
@@ -217,17 +199,29 @@ const Calendar = () => {
   const onChange = (value) => {
     const v = value;
     textRef.current = v;
+    setSave(false);
   }
 
   const onClickSave = () => {
-    console.log(textRef.current)
-
-    CalendarStore.postUserNote({ note: textRef.current, note_date: date.format("DD/MM/YYYY") }, responseAddUserNote);
+    if(id){
+      CalendarStore.putUserNote({id: id, note: textRef.current, note_date: date.format("DD/MM/YYYY") }, responseUpdateUserNote)
+    }else{
+      CalendarStore.postUserNote({ note: textRef.current, note_date: date.format("DD/MM/YYYY") }, responseAddUserNote);
+    }
   }
 
   const responseAddUserNote = (response) => {
-    if (response)
-      setUserNote(response.note)
+    if (response) {
+      setUserNote(response.note);
+      setSave(true);
+    }
+  }
+
+  const responseUpdateUserNote = (response) => {
+    if (response) {
+      setUserNote(response.note);
+      setSave(true);
+    }
   }
 
   const UserNotesComponent = () => {
@@ -238,7 +232,7 @@ const Calendar = () => {
           <TextEditor onChange={onChange} defaultValue={userNote} />
         </Grid>
         <Grid item>
-          <MainButton onClick={onClickSave} text={userNote !== textRef.current ? "Salvar" : "Salvo!"} />
+          <MainButton onClick={onClickSave} text={save ? "Salvo!" : "Salvar"} />
         </Grid>
       </Grid>
     )

@@ -35,7 +35,7 @@ class CStore extends EventEmitter {
     postUserNote(note, callback) {
         let userId = JSON.parse(localStorage.getItem('user'));
         let token = SessionStore.getToken();
-        if(!token){
+        if (!token) {
             return
         }
         if (userId) {
@@ -58,15 +58,41 @@ class CStore extends EventEmitter {
             });
     }
 
-    getUserNote(date, callback) {
+    putUserNote(note, callback) {
         let userId = JSON.parse(localStorage.getItem('user'));
         let token = SessionStore.getToken();
-        if(!token){
+        if (!token) {
             return
         }
         if (userId) {
             userId = userId.id
-        }else{
+        }
+        axios.put(LocalConfig.baseURL + '/users/' + userId + "/notes", note, {
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(function (response) {
+                if (response?.data) {
+                    callback(response.data)
+                }
+            })
+            .catch(function (error) {
+                errorHandler(error);
+                callback(null);
+            });
+    }
+
+    getUserNote(date, callback) {
+        let userId = JSON.parse(localStorage.getItem('user'));
+        let token = SessionStore.getToken();
+        if (!token) {
+            return
+        }
+        if (userId) {
+            userId = userId.id
+        } else {
             return
         }
 
@@ -79,7 +105,7 @@ class CStore extends EventEmitter {
             .then(function (response) {
                 if (response?.data) {
                     callback(response.data);
-                }else{
+                } else {
                     callback(null);
                 }
             })
