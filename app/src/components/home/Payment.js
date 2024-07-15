@@ -54,7 +54,7 @@ const Payment = () => {
     <div>
       <Grid container sx={classes.container} spacing={2} direction="column" justifyContent="center" alignItems="center">
         <Typography variant='h6'>{"Seja bem-vindo(a) " + user.name + "!"}</Typography>
-        <Typography variant='h2'>{"R$ 129,90"}</Typography>
+        <Typography variant='h2'>{"R$ 77,00"}</Typography>
 
         <Grid item xs>
           <FormControl>
@@ -74,8 +74,8 @@ const Payment = () => {
         <Grid item xs>
           {paymentMethod === 'Pix' ? (
             <Box textAlign="center" sx={{ width: '400px', wordBreak: 'break-word' }}>
-              <Grid container spacing={2}>
-                <Grid item>
+              <Grid container spacing={2} direction="column" alignItems="center">
+                <Grid item sx={{ textAlign: 'left' }}>
                   <Typography variant="h6">Instruções de pagamento:</Typography>
                   <Typography>1. Copie o código pix</Typography>
                   <Typography>2. Abra o aplicativo do seu banco</Typography>
@@ -84,13 +84,12 @@ const Payment = () => {
                 </Grid>
                 <br></br>
                 <Divider variant="middle" flexItem />
-                <br></br>
                 <Grid item>
-                  <Typography ref={pixCopy}>
+                  <Typography ref={pixCopy} style={{ fontSize: '12px' }}>
                     00020101021126810014br.gov.bcb.pix0131paulaarrudaastrologia@gmail.com0224Gratidao pela confianca 520400005303986540577.005802BR5920PAULA ARRUDA PENTEAD6009SAO PAULO62070503***6304D944
                   </Typography>
                 </Grid>
-
+                
                 <Grid item>
                   <MainButton sx={classes.loginButton} onClick={handleCopyPix} text={"Copiar código pix"} />
                 </Grid>
@@ -101,14 +100,22 @@ const Payment = () => {
             </Box>
           ) : (
             <Box textAlign="center" sx={{ width: '400px', wordBreak: 'break-word' }}>
-              <Typography variant="h6">Instruções de pagamento:</Typography>
-              <Typography>1. Realize o pagamento pela plataforma do PagSeguro clicando em "Ir para pagamento"</Typography>
-              <Typography>2. Após a conclusão, envie o comprovante seguindo as instruções do botão "Enviar comprovante"</Typography>
-              <br></br>
-              <Divider variant="middle" flexItem />
-              <br></br>
-              <Link href='https://pag.ae/7-Gsoij12' target='_blank'><MainButton sx={classes.loginButton} text={"Ir para pagamento"} /> </Link>
-              <MainButton sx={classes.loginButton} onClick={handleOpenModal} text={"Enviar comprovante"} />
+              <Grid container spacing={2} direction="column" alignItems="center">
+                <Grid item sx={{ textAlign: 'left' }}>
+                  <Typography variant="h6">Instruções de pagamento:</Typography>
+                  <Typography>1. Realize o pagamento pela plataforma do PagSeguro clicando em "Ir para pagamento"</Typography>
+                  <Typography>2. Após a conclusão, envie o comprovante seguindo as instruções do botão "Enviar comprovante"</Typography>
+                </Grid>
+                <br></br>
+                <Divider variant="middle" flexItem />
+                <br></br>
+                <Grid item>
+                  <Link href='https://pag.ae/7-Gsoij12' target='_blank'><MainButton sx={classes.loginButton} text={"Ir para pagamento"} /> </Link>
+                </Grid>
+                <Grid item>
+                  <MainButton sx={classes.loginButton} onClick={handleOpenModal} text={"Enviar comprovante"} />
+                </Grid>
+              </Grid>
             </Box>
           )}
         </Grid>
@@ -138,13 +145,13 @@ const Payment = () => {
               Whatsapp
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Você pode enviar o comprovante por whatsapp para o número [xxxx] ou clique <Link href=''>aqui</Link>
+              Você pode enviar o comprovante por whatsapp para o número +5511930803750 ou clique <Link href='https://wa.me/+5511930803750' target='_blank'>aqui</Link>
             </Typography>
             <Typography id="modal-modal-title" variant="h6" component="h2">
               E-mail
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Você pode enviar o comprovante para o e-mail  [xxxx] ou clique <Link href=''>aqui</Link>
+              Você pode enviar o comprovante para o e-mail astrologiapaulaarruda@gmail.com ou clique <Link href='mailto:astrologiapaulaarruda@gmail.com' target='_blank'>aqui</Link>
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
               Ao enviar o comprovante, dentro de instantes sua estará pronta com muito carinho para usar 😊
