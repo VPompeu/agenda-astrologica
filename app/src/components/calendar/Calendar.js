@@ -151,7 +151,12 @@ const Calendar = () => {
               </Grid>
             </Grid>
             <Collapse in={calendarShow}>
-              <DateCalendar value={date} onChange={onChangeDate} />
+            <DateCalendar
+                value={date}
+                onChange={onChangeDate}
+                minDate={moment("2024-01-01")} // Define a data mínima como 01/01/2024
+                maxDate={moment("2024-12-31")} // Define a data máxima como 31/12/2024
+              />
             </Collapse>
           </Grid>
           <Grid item xs={12}>

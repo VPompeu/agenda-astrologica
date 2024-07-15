@@ -4,7 +4,8 @@ import TextField from '@mui/material/TextField';
 import Styles from "../../styles/RegisterStyle";
 import Logo from '../../assets/logoSemFundo.png';
 
-import { Grid } from '@mui/material';
+import { Grid, Snackbar } from '@mui/material'; // Importe o Snackbar
+import MuiAlert from '@mui/material/Alert';
 import MenuBar from '../MenuBar';
 import SessionStore from '../../stores/SessionStore';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +15,7 @@ const Register = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [phone, setPhone] = useState("");
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false); // Estado para controlar a exibição da mensagem de sucesso
 
     const navigate = useNavigate();
 
@@ -25,13 +27,15 @@ const Register = () => {
 
     const responseRegisterUser = (response) => {
         if(response){
-            console.log(response)
             SessionStore.setEmail(response.email);
-            navigate("/login");
+            setShowSuccessMessage(true); // Mostrar a mensagem de sucesso após o registro
+            setTimeout(() => {
+                navigate("/login");
+            }, 2000); // Redirecionar para a página de login após 2 segundos
         }
     }
-    const onChangeInput = (event) => {
 
+    const onChangeInput = (event) => {
         if (event.target.name === 'name') {
             setName(event.target.value);
         }
@@ -44,7 +48,10 @@ const Register = () => {
         if (event.target.name === 'phone') {
             setPhone(event.target.value);
         }
-      
+    }
+
+    const handleCloseSnackbar = () => {
+        setShowSuccessMessage(false); // Fechar a mensagem de sucesso quando o usuário a fechar manualmente
     }
 
     return (
@@ -67,9 +74,16 @@ const Register = () => {
                     <TextField id="standard-basic" label="Telefone" name="phone" variant="standard" onChange={onChangeInput} />
                 </Grid>
                 <Grid item xs={12}>
-                    <MainButton onClick={register} text={"Register"} />
+                    <MainButton onClick={register} text={"Registrar-se"} />
                 </Grid>
             </Grid>
+
+            {/* Snackbar para exibir a mensagem de sucesso */}
+            <Snackbar open={showSuccessMessage} autoHideDuration={2000} onClose={handleCloseSnackbar}>
+                <MuiAlert onClose={handleCloseSnackbar} severity="success" elevation={6} variant="filled">
+                    Usuário registrado com sucesso!
+                </MuiAlert>
+            </Snackbar>
         </Grid>
     );
 }

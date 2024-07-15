@@ -89,15 +89,16 @@ const TextEditor = ({ onChange, defaultValue }) => {
     if (!value) { return null; }
 
     return (
-        <Grid container ref={ref}>
-            <RichTextEditor
-                placeholder={"Digite sua anotação diária!"}
-                className={`rte-editor ${theme}`}
-                blockStyleFn={getTextAlignClassName}
-                value={value}
-
-                onChange={handleOnChange}
-            />
+        <Grid container ref={ref} style={{ width: '100%', margin: 0 }} alignItems="center" justifyContent="center">
+            <Grid item xs={12} style={{ width: '98%' }} textAlign="center">
+                <RichTextEditor
+                    placeholder={"Digite sua anotação diária!"}
+                    className={`rte-editor ${theme}`}
+                    blockStyleFn={getTextAlignClassName}
+                    value={value}
+                    onChange={handleOnChange}
+                />
+            </Grid>
         </Grid>
     );
 };

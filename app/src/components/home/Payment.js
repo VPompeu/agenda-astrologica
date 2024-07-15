@@ -105,6 +105,7 @@ const Payment = () => {
                   <Typography variant="h6">Instruções de pagamento:</Typography>
                   <Typography>1. Realize o pagamento pela plataforma do PagSeguro clicando em "Ir para pagamento"</Typography>
                   <Typography>2. Após a conclusão, envie o comprovante seguindo as instruções do botão "Enviar comprovante"</Typography>
+                  <Typography sx={{color: 'red'}}>*Lembrando que pagamento via PagSeguro tem uma taxa de 5 reais, alterando o valor de R$77,00 para R$82,00</Typography>
                 </Grid>
                 <br></br>
                 <Divider variant="middle" flexItem />
@@ -145,13 +146,13 @@ const Payment = () => {
               Whatsapp
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Você pode enviar o comprovante por whatsapp para o número +5511930803750 ou clique <Link href='https://wa.me/+5511930803750' target='_blank'>aqui</Link>
+              Você pode enviar o comprovante por whatsapp para o número +5511930803750 ou clique <Link href='https://wa.me/+5511930803750' target='_blank'><strong>aqui</strong></Link>
             </Typography>
             <Typography id="modal-modal-title" variant="h6" component="h2">
               E-mail
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Você pode enviar o comprovante para o e-mail astrologiapaulaarruda@gmail.com ou clique <Link href='mailto:astrologiapaulaarruda@gmail.com' target='_blank'>aqui</Link>
+              Você pode enviar o comprovante para o e-mail astrologiapaulaarruda@gmail.com ou clique <Link href='mailto:astrologiapaulaarruda@gmail.com' target='_blank'><strong>aqui</strong></Link>
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
               Ao enviar o comprovante, dentro de instantes sua estará pronta com muito carinho para usar 😊

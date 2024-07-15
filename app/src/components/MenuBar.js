@@ -71,10 +71,10 @@ const MenuBar = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Agenda Astrológica
           </Typography>
-          <IconButton onClick={onToggleTheme} aria-label="Theme">
+          {/* <IconButton onClick={onToggleTheme} aria-label="Theme">
             {!themeState && <DarkModeIcon sx={classes.colorIcon} />}
             {themeState && <LightModeIcon />}
-          </IconButton>
+          </IconButton> */}
           <Button sx={classes.colorButton} onClick={buttonLogin}>{buttonText}</Button>
         </Toolbar>
       </AppBar>
