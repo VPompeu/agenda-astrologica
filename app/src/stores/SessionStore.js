@@ -79,6 +79,34 @@ class SStore extends EventEmitter {
             });
     }
 
+    requestPasswordReset(email, callback) {
+
+        axios.post(LocalConfig.baseURL + '/request_password_reset', { email })
+            .then(function (response) {
+                if (response?.data) {
+                    callback(response.data)
+                }
+            })
+            .catch(function (error) {
+                errorHandler(error);
+                callback(null);
+            });
+    }
+
+    sendNewPassword(password, token, callback) {
+
+        axios.post(LocalConfig.baseURL + '/password_reset', { new_password: password, token })
+            .then(function (response) {
+                if (response?.data) {
+                    callback(response.data)
+                }
+            })
+            .catch(function (error) {
+                errorHandler(error);
+                callback(null);
+            });
+    }
+
     removeToken() {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
@@ -102,11 +130,11 @@ class SStore extends EventEmitter {
         }
     }
     getUser() {
-       let user = localStorage.getItem("user");
-       if(user){
-        return JSON.parse(user);
-       }
-       
+        let user = localStorage.getItem("user");
+        if (user) {
+            return JSON.parse(user);
+        }
+
     }
 
     verifyUserLicense(callback) {

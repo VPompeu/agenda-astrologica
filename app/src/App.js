@@ -9,8 +9,10 @@ import Login from './components/login/Login';
 import Home from './components/home/Home';
 import Page from "./components/Page";
 import Register from './components/login/Register';
+import RequestPassword from './components/login/RequestPassword';
 import Payment from './components/home/Payment';
 import 'moment/locale/pt-br';
+import ResetPassword from './components/login/ResetPassword';
 const App = () => {
 
   const [theme, setTheme] = useState(lightTheme);
@@ -46,6 +48,8 @@ const App = () => {
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/request_password" element={<RequestPassword />} />
+            <Route path="/reset_password" element={<ResetPassword />} />
           </Routes>
         </Router>
       </ThemeProvider>
