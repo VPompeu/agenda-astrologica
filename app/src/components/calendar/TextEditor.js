@@ -97,6 +97,9 @@ const TextEditor = ({ onChange, defaultValue }) => {
                     blockStyleFn={getTextAlignClassName}
                     value={value}
                     onChange={handleOnChange}
+                    autoComplete="off"
+                    autoCorrect="off"
+                    autoCapitalize="off"
                 />
             </Grid>
         </Grid>

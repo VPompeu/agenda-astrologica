@@ -5,7 +5,7 @@ const RegisterStyles = () => {
   
     return {
       container: {
-          marginTop: "10vh",
+          marginTop: "1vh",
           padding: "10px"
       }
     };

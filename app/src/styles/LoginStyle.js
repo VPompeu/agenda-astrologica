@@ -5,7 +5,7 @@ const LoginStyles = () => {
 
   return {
     container: {
-      marginTop: "10vh",
+      marginTop: "1vh",
     }
   };
 };

@@ -59,7 +59,7 @@ const Register = () => {
             <MenuBar />
             <Grid container sx={classes.container} spacing={2} direction="column" justifyContent="center" alignItems="center">
                 <Grid item xs>
-                    <img src={Logo} alt="Logo" style={{ width: '300px', height: 'auto' }} />
+                    <img src={Logo} alt="Logo" style={{ width: '250px', height: 'auto' }} />
                 </Grid>
                 <Grid item xs>
                     <TextField id="standard-basic" label="Nome" name="name" variant="standard" onChange={onChangeInput} />
