@@ -7,11 +7,17 @@ import SessionStore from '../../stores/SessionStore';
 import { Grid, Link, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import MenuBar from '../MenuBar';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+
 const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const classes = Styles();
@@ -44,6 +50,10 @@ const Login = () => {
     SessionStore.login(email, password, responseLogin);
   }
 
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div>
       <MenuBar />
@@ -52,10 +62,21 @@ const Login = () => {
           <img src={Logo} alt="Logo" style={{ width: '250px', height: 'auto' }} />
         </Grid>
         <Grid item xs>
-          <TextField error={error} value={email} id="standard-basic" label="Email" name='email' variant="standard" onChange={onChangeInput} />
+          <TextField error={error} value={email} id="standard-basic" label="Email" name='email' variant="standard" onChange={onChangeInput} sx={{width:'200px'}}/>
         </Grid>
         <Grid item xs>
-          <TextField error={error} id="standard-basic" label="Senha" name='password' variant="standard" type="password" onChange={onChangeInput} />
+          <TextField error={error} id="standard-basic" label="Senha" name='password' variant="standard" type={showPassword ? 'text' : 'password'} onChange={onChangeInput} sx={{width:'200px'}} InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}/>
         </Grid>
         <Grid item xs={12}>
           <MainButton sx={classes.loginButton} onClick={login} text={"Entrar"} />

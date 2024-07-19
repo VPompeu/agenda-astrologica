@@ -9,12 +9,17 @@ import MuiAlert from '@mui/material/Alert';
 import MenuBar from '../MenuBar';
 import SessionStore from '../../stores/SessionStore';
 import { useNavigate } from 'react-router-dom';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
 
 const Register = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [phone, setPhone] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false); // Estado para controlar a exibição da mensagem de sucesso
 
     const navigate = useNavigate();
@@ -54,6 +59,10 @@ const Register = () => {
         setShowSuccessMessage(false); // Fechar a mensagem de sucesso quando o usuário a fechar manualmente
     }
 
+    const handleClickShowPassword = () => {
+        setShowPassword(!showPassword);
+      };
+
     return (
         <Grid>
             <MenuBar />
@@ -68,7 +77,18 @@ const Register = () => {
                     <TextField id="standard-basic" label="Email" name="email" variant="standard" onChange={onChangeInput} />
                 </Grid>
                 <Grid item xs>
-                    <TextField id="standard-basic" label="Senha" name="password" variant="standard" type="password" onChange={onChangeInput} />
+                    <TextField id="standard-basic" label="Senha" name="password" variant="standard" type="password" onChange={onChangeInput} sx={{width:'185px'}} InputProps={{
+                    endAdornment: (
+                    <InputAdornment position="end">
+                    <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                    </InputAdornment>
+                    ),
+                    }}/>
                 </Grid>
                 <Grid item xs>
                     <TextField id="standard-basic" label="Telefone" name="phone" variant="standard" onChange={onChangeInput} />

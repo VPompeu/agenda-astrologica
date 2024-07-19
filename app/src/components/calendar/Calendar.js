@@ -56,6 +56,7 @@ const Calendar = () => {
   const [day, setDay] = useState("");
   const [month, setMonth] = useState("");
   const [dayWeek, setDayWeek] = useState("");
+  const [showPopup, setShowPopup] = useState(false);
 
   const textRef = useRef("");
 
@@ -151,7 +152,7 @@ const Calendar = () => {
               </Grid>
             </Grid>
             <Collapse in={calendarShow}>
-            <DateCalendar
+              <DateCalendar
                 value={date}
                 onChange={onChangeDate}
                 minDate={moment("2024-01-01")} // Define a data mínima como 01/01/2024
@@ -208,9 +209,9 @@ const Calendar = () => {
   }
 
   const onClickSave = () => {
-    if(id){
-      CalendarStore.putUserNote({id: id, note: textRef.current, note_date: date.format("DD/MM/YYYY") }, responseUpdateUserNote)
-    }else{
+    if (id) {
+      CalendarStore.putUserNote({ id: id, note: textRef.current, note_date: date.format("DD/MM/YYYY") }, responseUpdateUserNote)
+    } else {
       CalendarStore.postUserNote({ note: textRef.current, note_date: date.format("DD/MM/YYYY") }, responseAddUserNote);
     }
   }
@@ -219,6 +220,7 @@ const Calendar = () => {
     if (response) {
       setUserNote(response.note);
       setSave(true);
+      showPopupMessage();
     }
   }
 
@@ -226,7 +228,15 @@ const Calendar = () => {
     if (response) {
       setUserNote(response.note);
       setSave(true);
+      showPopupMessage();
     }
+  }
+
+  const showPopupMessage = () => {
+    setShowPopup(true);
+    setTimeout(() => {
+      setShowPopup(false);
+    }, 3000);
   }
 
   const UserNotesComponent = () => {
@@ -237,34 +247,49 @@ const Calendar = () => {
           <TextEditor onChange={onChange} defaultValue={userNote} />
         </Grid>
         <Grid item>
-          <MainButton onClick={onClickSave} text={save ? "Salvo!" : "Salvar"} />
+          <MainButton onClick={onClickSave} text={save ? "Salvar" : "Salvar"} />
         </Grid>
       </Grid>
     )
   }
 
   return (
+    <>
+      {showPopup && (
+        <div style={{
+          position: 'fixed',
+          bottom: '20px',
+          right: '20px',
+          backgroundColor: '#4caf50',
+          color: 'white',
+          padding: '10px',
+          borderRadius: '5px',
+          zIndex: 1000,
+        }}>
+          Sua anotação foi salva!
+        </div>
+      )}
+      <Grid container sx={classes.container} justifyContent="center" alignItems="center">
+        <ActionCalendarBar />
 
+        <NoteTabs />
 
-    <Grid container sx={classes.container} justifyContent="center" alignItems="center">
-      <ActionCalendarBar />
+        <Grid item xs={12}>
+          <CustomTabPanel value={value} index={0}>
+            <GlobalNotesComponent />
+          </CustomTabPanel>
 
-      <NoteTabs />
-
-      <Grid item xs={12}>
-        <CustomTabPanel value={value} index={0}>
-          <GlobalNotesComponent />
-        </CustomTabPanel>
-
-        <CustomTabPanel value={value} index={1}>
-          <UserNotesComponent />
-        </CustomTabPanel>
+          <CustomTabPanel value={value} index={1}>
+            <UserNotesComponent />
+          </CustomTabPanel>
+        </Grid>
       </Grid>
-    </Grid>
-
+    </>
   );
 }
+
 Calendar.propTypes = {
   onChange: PropTypes.func,
 };
+
 export default Calendar;

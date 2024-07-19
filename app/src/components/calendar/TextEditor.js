@@ -3,12 +3,13 @@ import PropTypes from "prop-types";
 import RichTextEditor, { getTextAlignClassName, getTextAlignBlockMetadata, getTextAlignStyles } from "react-rte";
 import "../../styles/CalendarStyle.css";
 import SessionStore from "../../stores/SessionStore";
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 
 const TextEditor = ({ onChange, defaultValue }) => {
 
     const [theme, setTheme] = useState(SessionStore.getTheme());
     const [value, setValue] = useState(null);
+    const [charCount, setCharCount] = useState(0);
     const ref = useRef();
     const isListenerAdded = useRef(false); // Novo useRef para rastrear se o listener foi adicionado
 
@@ -76,13 +77,17 @@ const TextEditor = ({ onChange, defaultValue }) => {
     };
 
     const handleOnChange = (value) => {
-        setValue(value);
-        if (onChange) {
-            onChange(value.toString(
-                'html',
-                {
-                    blockStyleFn: getTextAlignStyles,
-                }));
+        const plainText = value.toString('markdown');
+        if (plainText.length <= 1000) {
+            setValue(value);
+            setCharCount(plainText.length);
+            if (onChange) {
+                onChange(value.toString(
+                    'html',
+                    {
+                        blockStyleFn: getTextAlignStyles,
+                    }));
+            }
         }
     };
 
@@ -101,6 +106,9 @@ const TextEditor = ({ onChange, defaultValue }) => {
                     autoCorrect="off"
                     autoCapitalize="off"
                 />
+                <Typography variant="caption" style={{ display: 'block', textAlign: 'right', marginTop: '8px' }}>
+                    {charCount}/1000 caracteres
+                </Typography>
             </Grid>
         </Grid>
     );

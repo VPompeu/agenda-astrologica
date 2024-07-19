@@ -5,10 +5,10 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Grid } from '@mui/material';
+import { Grid, Menu, MenuItem } from '@mui/material';
 import { useNavigate, useLocation } from "react-router-dom";
-import LightModeIcon from '@mui/icons-material/LightMode';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
+//import LightModeIcon from '@mui/icons-material/LightMode';
+//import DarkModeIcon from '@mui/icons-material/DarkMode';
 
 import Styles from "../styles/MenuBarStyle";
 
@@ -20,7 +20,8 @@ const MenuBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [buttonText, setButtonText] = useState("");
-  const [themeState, setThemeState] = useState(false);
+  //const [themeState, setThemeState] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   useEffect(() => {
     if (location.pathname === "/login") {
@@ -33,10 +34,10 @@ const MenuBar = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onToggleTheme = () => {
-    SessionStore.emit("theme_change");
-    setThemeState(!themeState);
-  }
+  // const onToggleTheme = () => {
+  //   SessionStore.emit("theme_change");
+  //   setThemeState(!themeState);
+  // }
 
   const buttonLogin = () => {
     console.log(location.pathname);
@@ -50,23 +51,54 @@ const MenuBar = () => {
       setButtonText("Registrar");
       navigate("/login");
     }
-
   }
+
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleHelpClick = () => {
+    window.open("https://wa.me/+5511930803750", "_blank");
+  };
 
   return (
     <Grid sx={classes.container}>
       <AppBar position="static">
         <Toolbar>
           {SessionStore.getToken() &&
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
+            <>
+              <IconButton
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                sx={{ mr: 2 }}
+                onClick={handleMenuOpen}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+              >
+                <MenuItem onClick={handleHelpClick}>Ajuda</MenuItem>
+              </Menu>
+            </>
           }
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Agenda Astrológica
@@ -78,7 +110,6 @@ const MenuBar = () => {
           <Button sx={classes.colorButton} onClick={buttonLogin}>{buttonText}</Button>
         </Toolbar>
       </AppBar>
-
     </Grid>
   );
 }

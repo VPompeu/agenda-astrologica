@@ -9,6 +9,7 @@ import FormLabel from '@mui/material/FormLabel';
 import Divider from '@mui/material/Divider';
 import MainButton from "../common/MainButton";
 import SessionStore from '../../stores/SessionStore';
+import QrCode from '../../assets/qrcodePaulaArruda.png';
 
 const Payment = () => {
   const classes = Styles();
@@ -55,7 +56,13 @@ const Payment = () => {
     <div>
       <Grid container sx={classes.container} spacing={2} direction="column" justifyContent="center" alignItems="center">
         <Typography variant='h6'>{"Seja bem-vindo(a) " + user.name + "!"}</Typography>
+        <br></br>
+        <Grid>
+          <Typography variant="h5" style={{ textDecoration: 'line-through' }}>De R$ 97,90</Typography>
+          <Typography variant="h5" textAlign='center'>por</Typography>
+        </Grid>
         <Typography variant='h2'>{"R$ 77,00"}</Typography>
+        <Typography sx={{backgroundColor:'yellow'}}>Valor promocional para os 50 primeiros compradores</Typography>
 
         <Grid item xs>
           <FormControl>
@@ -87,6 +94,7 @@ const Payment = () => {
                 <br />
                 <Divider variant="middle" flexItem />
                 <Grid item>
+                  <img src={QrCode} alt="qr-code" style={{ width: '150px', height: 'auto' }} />
                   <Typography ref={pixCopy} style={{ fontSize: '12px' }}>
                     00020101021126810014br.gov.bcb.pix0131paulaarrudaastrologia@gmail.com0224Gratidao pela confianca 520400005303986540577.005802BR5920PAULA ARRUDA PENTEAD6009SAO PAULO62070503***6304D944
                   </Typography>
@@ -97,6 +105,7 @@ const Payment = () => {
                 <Grid item>
                   <MainButton sx={classes.loginButton} onClick={handleOpenModal} text={"Enviar comprovante"} />
                 </Grid>
+                <Typography sx={{color:'red'}}>Sua agenda será liberada após o envio do comprovante!</Typography>
               </Grid>
             </Box>
           )}
@@ -119,6 +128,7 @@ const Payment = () => {
                 <Grid item>
                   <MainButton sx={classes.loginButton} onClick={handleOpenModal} text={"Enviar comprovante"} />
                 </Grid>
+                <Typography sx={{color:'red'}}>Sua agenda será liberada após o envio do comprovante!</Typography>
               </Grid>
             </Box>
           )}
@@ -141,6 +151,7 @@ const Payment = () => {
                 <Grid item>
                   <MainButton sx={classes.loginButton} onClick={handleOpenModal} text={"Enviar comprovante"} />
                 </Grid>
+                <Typography sx={{color:'red'}}>Sua agenda será liberada após o envio do comprovante!</Typography>
               </Grid>
             </Box>
           )}
@@ -160,18 +171,18 @@ const Payment = () => {
             left: '50%',
             transform: 'translate(-50%, -50%)',
             width: 400,
-            bgcolor: '#B39DDB',
+            bgcolor: 'white',
             border: '2px solid #7E57C2',
             borderRadius: 8,
             boxShadow: 24,
-            backgroundColor: "#B39DDB",
+            backgroundColor: "white",
             p: 4,
           }}>
             <Typography id="modal-modal-title" variant="h6" component="h2">
               Whatsapp
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Você pode enviar o comprovante por whatsapp para o número +5511930803750 ou clique <Link href='https://wa.me/+5511930803750' target='_blank'><strong>aqui</strong></Link>
+              Você pode enviar o comprovante por whatsapp para o número +5511930803750 ou clique <Link href={whatsappLink} target='_blank'><strong>aqui</strong></Link>
             </Typography>
             <br></br>
             <Typography id="modal-modal-title" variant="h6" component="h2">
@@ -181,14 +192,8 @@ const Payment = () => {
               Você pode enviar o comprovante para o e-mail astrologiapaulaarruda@gmail.com ou clique <Link href='mailto:astrologiapaulaarruda@gmail.com' target='_blank'><strong>aqui</strong></Link>
             </Typography>
             <br></br>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              Paypal
-            </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Você pode enviar o comprovante do Paypal por whatsapp para o número +5511930803750 ou clique <Link href={whatsappLink} target='_blank'><strong>aqui</strong></Link>
-            </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Ao enviar o comprovante, dentro de instantes sua estará pronta com muito carinho para usar 😊
+              Ao enviar o comprovante, dentro de instantes sua agenda estará pronta com muito carinho para usar 😊
             </Typography>
             <Button onClick={handleCloseModal}>Entendi</Button>
           </Box>
