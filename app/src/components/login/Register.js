@@ -27,11 +27,11 @@ const Register = () => {
     const classes = Styles();
 
     const register = () => {
-        SessionStore.signin({name, email, password, phone}, responseRegisterUser);
+        SessionStore.signin({ name, email, password, phone }, responseRegisterUser);
     }
 
     const responseRegisterUser = (response) => {
-        if(response){
+        if (response) {
             SessionStore.setEmail(response.email);
             setShowSuccessMessage(true); // Mostrar a mensagem de sucesso após o registro
             setTimeout(() => {
@@ -61,7 +61,7 @@ const Register = () => {
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
-      };
+    };
 
     return (
         <Grid>
@@ -77,18 +77,18 @@ const Register = () => {
                     <TextField id="standard-basic" label="Email" name="email" variant="standard" onChange={onChangeInput} />
                 </Grid>
                 <Grid item xs>
-                    <TextField id="standard-basic" label="Senha" name="password" variant="standard" type="password" onChange={onChangeInput} sx={{width:'185px'}} InputProps={{
-                    endAdornment: (
-                    <InputAdornment position="end">
-                    <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                    </InputAdornment>
-                    ),
-                    }}/>
+                    <TextField error={error} id="standard-basic" label="Senha" name='password' variant="standard" type={showPassword ? 'text' : 'password'} onChange={onChangeInput} sx={{ width: '200px' }} InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                >
+                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }} />
                 </Grid>
                 <Grid item xs>
                     <TextField id="standard-basic" label="Telefone" name="phone" variant="standard" onChange={onChangeInput} />
