@@ -194,9 +194,9 @@ const Calendar = () => {
     return (
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Typography>
-            {note?.note || "Sem notas para esse dia"}
-          </Typography>
+          <Typography
+            dangerouslySetInnerHTML={{ __html: note?.note || "Sem notas para esse dia" }}
+          />
         </Grid>
       </Grid>
     )
