@@ -9,7 +9,8 @@ import FormLabel from '@mui/material/FormLabel';
 import Divider from '@mui/material/Divider';
 import MainButton from "../common/MainButton";
 import SessionStore from '../../stores/SessionStore';
-import QrCode from '../../assets/qrcodePaulaArruda.png';
+//import QrCode from '../../assets/qrcodePaulaArruda.png';
+import QrCodeSP from '../../assets/qrcode-sem-promo.png';
 
 const Payment = () => {
   const classes = Styles();
@@ -48,7 +49,7 @@ const Payment = () => {
     setModalOpen(false);
   };
 
-  const whatsappLink = user.email 
+  const whatsappLink = user.email
     ? `https://wa.me/+5511930803750?text=Paguei%20por%20paypal,%20meu%20email%20é%20${encodeURIComponent(user.email)}`
     : `https://wa.me/+5511930803750?text=Paguei%20por%20paypal,%20meu%20email%20é%20${encodeURIComponent(user.email)}`;
 
@@ -58,11 +59,12 @@ const Payment = () => {
         <Typography variant='h6'>{"Seja bem-vindo(a) " + user.name + "!"}</Typography>
         <br></br>
         <Grid>
-          <Typography variant="h5" style={{ textDecoration: 'line-through' }}>De R$ 97,90</Typography>
-          <Typography variant="h5" textAlign='center'>por</Typography>
+          {/* <Typography variant="h5" style={{ textDecoration: 'line-through' }}>De R$ 97,90</Typography> */}
+          <Typography variant="h2">R$ 97,00</Typography>
+          {/* <Typography variant="h5" textAlign='center'>por</Typography> */}
         </Grid>
-        <Typography variant='h2'>{"R$ 77,00"}</Typography>
-        <Typography sx={{backgroundColor:'yellow'}}>Valor promocional para os 50 primeiros compradores</Typography>
+        {/* <Typography variant='h2'>{"R$ 77,00"}</Typography>
+        <Typography sx={{backgroundColor:'yellow'}}>Valor promocional para os 50 primeiros compradores</Typography> */}
 
         <Grid item xs>
           <FormControl>
@@ -94,9 +96,13 @@ const Payment = () => {
                 <br />
                 <Divider variant="middle" flexItem />
                 <Grid item>
-                  <img src={QrCode} alt="qr-code" style={{ width: '150px', height: 'auto' }} />
+                <img src={QrCodeSP} alt="qr-code" style={{ width: '150px', height: 'auto' }}/>
+                  {/* <img src={QrCode} alt="qr-code" style={{ width: '150px', height: 'auto' }} (promo)/> */}
+                  {/* <Typography ref={pixCopy} style={{ fontSize: '12px' }}>
+                    00020101021126840014br.gov.bcb.pix0131paulaarrudaastrologia@gmail.com0227Gratidao pela sua confianca520400005303986540597.005802BR5920PAULA ARRUDA PENTEAD6009SAO PAULO62070503***6304FDAF
+                  </Typography> (promo)*/}
                   <Typography ref={pixCopy} style={{ fontSize: '12px' }}>
-                    00020101021126810014br.gov.bcb.pix0131paulaarrudaastrologia@gmail.com0224Gratidao pela confianca 520400005303986540577.005802BR5920PAULA ARRUDA PENTEAD6009SAO PAULO62070503***6304D944
+                    00020101021126840014br.gov.bcb.pix0131paulaarrudaastrologia@gmail.com0227Gratidao pela sua confianca520400005303986540597.005802BR5920PAULA ARRUDA PENTEAD6009SAO PAULO62070503***6304FDAF
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -105,7 +111,7 @@ const Payment = () => {
                 <Grid item>
                   <MainButton sx={classes.loginButton} onClick={handleOpenModal} text={"Enviar comprovante"} />
                 </Grid>
-                <Typography sx={{color:'red'}}>Sua agenda será liberada após o envio do comprovante!</Typography>
+                <Typography sx={{ color: 'red' }}>Sua agenda será liberada após o envio do comprovante!</Typography>
               </Grid>
             </Box>
           )}
@@ -117,18 +123,20 @@ const Payment = () => {
                   <Typography variant="h6">Instruções de pagamento:</Typography>
                   <Typography>1. Realize o pagamento pela plataforma do PagSeguro clicando em "Ir para pagamento"</Typography>
                   <Typography>2. Após a conclusão, envie o comprovante seguindo as instruções do botão "Enviar comprovante"</Typography>
-                  <Typography sx={{ color: 'red' }}>*Lembrando que pagamento via PagSeguro tem uma taxa de 5 reais, alterando o valor de R$77,00 para R$82,00</Typography>
+                  {/* <Typography sx={{ color: 'red' }}>*Lembrando que pagamento via PagSeguro tem uma taxa de 5 reais, alterando o valor de R$77,00 para R$82,00</Typography> (promo)*/}
+                  <Typography sx={{ color: 'red' }}>*Lembrando que pagamento via PagSeguro tem uma taxa de 5 reais, alterando o valor de R$97,00 para R$102,00</Typography>
                 </Grid>
                 <br />
                 <Divider variant="middle" flexItem />
                 <br />
                 <Grid item>
-                  <Link href='https://pag.ae/7-Gsoij12' target='_blank'><MainButton sx={classes.loginButton} text={"Ir para pagamento"} /> </Link>
+                  {/* <Link href='https://pag.ae/7-Gsoij12' target='_blank'><MainButton sx={classes.loginButton} text={"Ir para pagamento"} /> </Link> (promo) */}
+                  <Link href='https://pag.ae/7-JyAv8Ba' target='_blank'><MainButton sx={classes.loginButton} text={"Ir para pagamento"} /> </Link>
                 </Grid>
                 <Grid item>
                   <MainButton sx={classes.loginButton} onClick={handleOpenModal} text={"Enviar comprovante"} />
                 </Grid>
-                <Typography sx={{color:'red'}}>Sua agenda será liberada após o envio do comprovante!</Typography>
+                <Typography sx={{ color: 'red' }}>Sua agenda será liberada após o envio do comprovante!</Typography>
               </Grid>
             </Box>
           )}
@@ -140,18 +148,20 @@ const Payment = () => {
                   <Typography variant="h6">Instruções de pagamento:</Typography>
                   <Typography>1. Realize o pagamento pela plataforma do Paypal clicando no botõ "Ir para pagamento"</Typography>
                   <Typography>2. Após a conclusão, envie o comprovante seguindo as instruções do botão "Enviar comprovante"</Typography>
-                  <Typography sx={{ color: 'red' }}>*Lembrando que pagamento via Paypal tem uma taxa de 5 reais, alterando o valor de R$77,00 para R$82,00</Typography>
+                  {/* <Typography sx={{ color: 'red' }}>*Lembrando que pagamento via Paypal tem uma taxa de 5 reais, alterando o valor de R$77,00 para R$82,00</Typography> (promo)*/}
+                  <Typography sx={{ color: 'red' }}>*Lembrando que pagamento via PagSeguro tem uma taxa de 5 reais, alterando o valor de R$97,00 para R$102,00</Typography>
                 </Grid>
                 <br />
                 <Divider variant="middle" flexItem />
                 <br />
                 <Grid item>
-                  <Link href='https://www.paypal.com/invoice/p/#28CFWRMJQX3FJFDC' target='_blank'><MainButton sx={classes.loginButton} text={"Ir para pagamento"} /></Link>
+                  {/* <Link href='https://www.paypal.com/invoice/p/#28CFWRMJQX3FJFDC' target='_blank'><MainButton sx={classes.loginButton} text={"Ir para pagamento"} /></Link> (promo) */}
+                  <Link href='https://www.paypal.com/invoice/p/#RW4ZZHAM8DAQRRQN' target='_blank'><MainButton sx={classes.loginButton} text={"Ir para pagamento"} /></Link>
                 </Grid>
                 <Grid item>
                   <MainButton sx={classes.loginButton} onClick={handleOpenModal} text={"Enviar comprovante"} />
                 </Grid>
-                <Typography sx={{color:'red'}}>Sua agenda será liberada após o envio do comprovante!</Typography>
+                <Typography sx={{ color: 'red' }}>Sua agenda será liberada após o envio do comprovante!</Typography>
               </Grid>
             </Box>
           )}
