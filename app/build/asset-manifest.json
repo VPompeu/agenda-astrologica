@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/static/css/main.85237efd.css",
-    "main.js": "/static/js/main.7db48fe9.js",
+    "main.js": "/static/js/main.9fb27e9b.js",
     "static/media/logoSemFundo.png": "/static/media/logoSemFundo.76a5b165b6dce5f1239f.png",
     "index.html": "/index.html",
     "main.85237efd.css.map": "/static/css/main.85237efd.css.map",
-    "main.7db48fe9.js.map": "/static/js/main.7db48fe9.js.map"
+    "main.9fb27e9b.js.map": "/static/js/main.9fb27e9b.js.map"
   },
   "entrypoints": [
     "static/css/main.85237efd.css",
-    "static/js/main.7db48fe9.js"
+    "static/js/main.9fb27e9b.js"
   ]
 }
