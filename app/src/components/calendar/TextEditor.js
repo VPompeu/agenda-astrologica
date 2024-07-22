@@ -78,6 +78,7 @@ const TextEditor = ({ onChange, defaultValue }) => {
 
     const handleOnChange = (value) => {
         const plainText = value.toString('markdown');
+        console.log(plainText)
         if (plainText.length <= 1000) {
             setValue(value);
             setCharCount(plainText.length);
@@ -105,6 +106,8 @@ const TextEditor = ({ onChange, defaultValue }) => {
                     autoComplete="off"
                     autoCorrect="off"
                     autoCapitalize="off"
+                    spellcheck='false'
+                    type='text'
                 />
                 <Typography variant="caption" style={{ display: 'block', textAlign: 'right', marginTop: '8px' }}>
                     {charCount}/1000 caracteres

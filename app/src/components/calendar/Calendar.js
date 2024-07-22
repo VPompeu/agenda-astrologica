@@ -10,10 +10,12 @@ import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
 
 import CalendarStore from '../../stores/CalendarStore';
 import TextEditor from './TextEditor';
 import MainButton from "../common/MainButton";
+import SessionStore from '../../stores/SessionStore';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -57,6 +59,8 @@ const Calendar = () => {
   const [month, setMonth] = useState("");
   const [dayWeek, setDayWeek] = useState("");
   const [showPopup, setShowPopup] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [actionSave, setActionSave] = useState(null);
 
   const textRef = useRef("");
 
@@ -68,24 +72,47 @@ const Calendar = () => {
     setMonth(moment().format("MMMM"));
     setDayWeek(moment().format("dddd"));
 
-    getUserNote();
+    bind();
+    return clear;
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
+    if (actionSave === "forward") {
+      onClickForward();
+    } else if (actionSave === "back") {
+      onClickBack();
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [save]);
+
+  useEffect(() => {
     if (date) {
+      setActionSave(null);
+      handleClose();
+      setSave(true);
       setDay(date.format("DD"));
       setMonth(date.format("MMMM"));
       setDayWeek(date.format("dddd"));
 
-      CalendarStore.getGlobalNote(date.format("DDMMYYYY"), responseGetGlobalNotes);
       CalendarStore.getUserNote(date.format("DDMMYYYY"), responseGetUserNote);
+      CalendarStore.getGlobalNote(date.format("DDMMYYYY"), responseGetGlobalNotes);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [date]);
 
-  const getUserNote = () => {
-    CalendarStore.getUserNote(moment().format("DDMMYYYY"), responseGetUserNote)
+  const bind = () => {
+    SessionStore.addListener("store_user", getUser);
+  }
+
+  const clear = () => {
+    SessionStore.removeListener("store_user", getUser);
+  }
+
+  const getUser = () => {
+    CalendarStore.getUserNote(moment().format("DDMMYYYY"), responseGetUserNote);
   }
 
   const responseGetUserNote = (response) => {
@@ -97,6 +124,11 @@ const Calendar = () => {
       setId(null);
     }
   }
+
+  const responseGetGlobalNotes = (response) => {
+    setNote(response);
+  }
+
   const toggleCalendar = () => {
     setCalendarShow(!calendarShow);
   }
@@ -110,17 +142,23 @@ const Calendar = () => {
   }
 
   const onClickBack = () => {
-    let d = moment(date).subtract(1, 'd');
-    setDate(d);
+    if (save) {
+      let d = moment(date).subtract(1, 'd');
+      setDate(d);
+    } else {
+      setOpen(true);
+      setActionSave("back");
+    }
   }
 
   const onClickForward = () => {
-    let d = moment(date).add(1, 'd');
-    setDate(d);
-  }
-
-  const responseGetGlobalNotes = (response) => {
-    setNote(response);
+    if (save) {
+      let d = moment(date).add(1, 'd');
+      setDate(d);
+    } else if (!save) {
+      setOpen(true);
+      setActionSave("forward");
+    }
   }
 
   const ActionCalendarBar = () => {
@@ -205,7 +243,10 @@ const Calendar = () => {
   const onChange = (value) => {
     const v = value;
     textRef.current = v;
-    setSave(false);
+    if (userNote === value) {
+      return;
+    }
+    setSave(false);  
   }
 
   const onClickSave = () => {
@@ -253,6 +294,24 @@ const Calendar = () => {
     )
   }
 
+  const handleClose = () => {
+    setOpen(false);
+  }
+
+  const onClickSaveModal = () => {
+    onClickSave();
+  }
+
+  const onClickSkipModal = () => {
+    if (actionSave === "forward") {
+      let d = moment(date).add(1, 'd');
+      setDate(d);
+    } else if (actionSave === "back") {
+      let d = moment(date).subtract(1, 'd');
+      setDate(d);
+    }
+  }
+
   return (
     <>
       {showPopup && (
@@ -269,6 +328,33 @@ const Calendar = () => {
           Sua anotação foi salva!
         </div>
       )}
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <div>
+          <Grid container sx={classes.modal} spacing={2}>
+            <Grid item xs={12}>
+              <Typography variant='h5'>Sua nota não foi salva!</Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant='body2'>Deseja salvar sua nota ou continuar sem salvar?</Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container spacing={2} justifyContent={'flex-end'}>
+                <Grid item>
+                  <MainButton text='Não salvar' onClick={onClickSkipModal}></MainButton>
+                </Grid>
+                <Grid item>
+                  <MainButton text='Salvar' onClick={onClickSaveModal}></MainButton>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </div>
+      </Modal>
       <Grid container sx={classes.container} justifyContent="center" alignItems="center">
         <ActionCalendarBar />
 

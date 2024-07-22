@@ -13,6 +13,8 @@ const Page = () => {
   useEffect(() => {
     if(!auth) {
       navigate("/login");
+    } else {
+      navigate("/home");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);

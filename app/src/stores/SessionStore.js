@@ -151,10 +151,11 @@ class SStore extends EventEmitter {
                     'Content-Type': 'application/json',
                 }
             })
-                .then(function (response) {
+                .then((response) => {
                     if (response?.data) {
                         localStorage.setItem('user', JSON.stringify(response.data));
-                        callback(response.data.license)
+                        this.emit("store_user");
+                        callback(response.data.license);
                     }
                 })
                 .catch(function (error) {
